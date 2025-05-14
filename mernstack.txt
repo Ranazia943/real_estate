@@ -1,0 +1,171 @@
+REACT JS
+PROPS:::?
+
+props is short of properties, are read only inputs which passed to a parent component to child component. they are used to passed data event handlers down to child component
+
+HOW ARE PROPS DIFFRENT FROM STATE?
+
+props are immutable and passed from a parent to a child, while state are mutable and managed which in a component . props are used for passing data to components, while state is used to managed data that changes within a components.(store data, manage)
+
+CAN YOU change THE VALUE OF PROPS INSIDE A CHILD COMPONENT?
+no props are read-only and can't change value in child component
+
+WHAT HAPPEN IF YOU TRY TO MODIFY PROPS IN A COMPONENT?
+Props are immutable in React. If you try to modify them directly, it won't throw an error, but it can lead to bugs or unexpected behavior.
+To "modify" props:
+You can't change them inside a component—instead, you must:
+Ask the parent component to send new props (e.g., via a callback function).
+Use state inside the child if local changes are needed.
+
+HOW YOU CAN PASS A function AS PROP?
+function Parent() {
+  const sayHello = () => alert("Hello!");
+
+  return <Child onGreet={sayHello} />;
+}
+CHILD:
+function Child({ onGreet }) {
+  return <button onClick={onGreet}>Greet</button>;
+}
+
+WHAT IS STATE IN REACT?
+state is an object that holds dynamic data and determine how a component renders and behaves. it is managed internally by the component and can change over time e.g 
+
+import React, { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0); // count is the state
+
+  return (
+    <div>
+      <p>{count}</p>
+      <button onClick={() => setCount(count + 1)}>Add</button>
+    </div>
+  );
+}
+🔹 useState(0) creates a state variable count with initial value 0.
+🔹 setCount updates the state and re-renders the component.
+
+    CAN STATE BE PASSED BETWEEN COMPONENT LIKE PROPS ( Also called Lifting State Up)
+    NO..if want to pass then you can pass state as props from a parent component to its child component
+
+Parent (holds the state):
+
+jsx
+Copy
+Edit
+
+    function Parent() {
+  const [count, setCount] = React.useState(0);
+
+  return (
+    <div>
+      <ChildA count={count} />
+      <ChildB updateCount={() => setCount(count + 1)} />
+    </div>
+  );
+}
+
+ChildA (reads the state):
+function ChildA({ count }) {
+  return <p>Count: {count}</p>;
+}
+ChildB (updates the state):
+function ChildB({ updateCount }) {
+  return <button onClick={updateCount}>Increment</button>;
+}
+
+
+===============================================>>>>>>>>>>>>>>>..
+WHAT IS DIFFRENCE B/W SETSTATE AND DIRECTLY MODIFYING THE STATE OBJECT?
+
+Why you should NOT modify state directly:
+React tracks state changes using internal mechanisms. If you change state directly, React doesn't know about it — so it won’t re-render the component.
+
+How to update state properly:???
+Use setState (in class components) or useState’s setSomething (in function components).
+These functions notify React that the state has changed, and trigger a re-render.
+
+ Example:
+🔴 Wrong:
+jsx
+Copy
+Edit
+function Counter() {
+  const [count, setCount] = React.useState(0);
+  count = 5; // ❌ Direct change — React won’t re-render!
+  return <p>{count}</p>;
+}
+
+🟢 Correct:
+jsx
+Copy
+Edit
+function Counter() {
+  const [count, setCount] = React.useState(0);
+
+  // Correctly update
+  const handleClick = () => setCount(5);
+
+  return (
+    <div>
+      <p>{count}</p>
+      <button onClick={handleClick}>Set to 5</button>
+    </div>
+  );
+}
+✅ Summary:
+Direct modification = React doesn’t detect the change.
+
+Using setState/setCount = React updates state and re-renders properly.
+
+WHAT IS THE INTIAL STATE , AND HOW CAN YOU SET IT IN A FUNCTIONAL COMPONENT?
+the initial state in a functional component can be set using the useState hook:
+
+const [count, setCount] = useState (0);
+here count is the initial state set to 0 and setcount is the function used to update the state
+
+HOW DOES REACT HANDLE STATE UPDATES --- SYNCHORONOUS, OR ASYNCHRONOUS? (ASYNCHRONOUS and UI re-render when in state and update)
+
+HOW WOULD YOU MANAGE STATE IN A CLASS COMPONENT?
+✅ Managing State in a Class Component (React):
+You use:
+
+this.state — to define state
+
+this.setState() — to update state
+
+HOW PROPS AND STATE RELATED?
+================>>>> 
+
+nodejs why single thread use ?
+Node.js is called single-threaded because your JS code runs on a single thread, even though under the hood, it uses background threads for non-blocking tasks.
+=================>>>>>>>>>>>...
+WHAT IS ASYNCHRONOUS IN NODEJS?
+
+Asynchronous programming means your code can start a task (like reading a file or calling an API) and move on without waiting for it to finish.
+
+🔁 When the task is done, a callback or promise handles the result later.
+Async = non-blocking.
+Node.js can do other work while waiting for slow tasks to finish.
+It uses callbacks, promises, or async/await.
+
+const fs = require('fs');
+
+console.log('Start');
+
+fs.readFile('file.txt', 'utf8', (err, data) => {
+  if (err) throw err;
+  console.log('File content:', data);
+});
+
+console.log('End');
+
+🧾 Output:
+
+
+Start
+End
+File content: (your file's content)
+
+=========================>>>
